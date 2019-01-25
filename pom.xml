@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>hbdc-parent</artifactId>
+        <groupId>edu.scut.cs</groupId>
+        <version>0.1.0</version>
+        <relativePath>../hbdc-parent/pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>hbdc-sysm</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>./hbdc-sysm-native</module>
+        <module>./hbdc-sysm-jni</module>
+    </modules>
+
+    <properties>
+        <!-- 文件拷贝时的编码 -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!-- 编译时的编码 -->
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+        <hbdc.sysm.jni>../hbdc-sysm-jni</hbdc.sysm.jni>
+        <hbdc.sysm.jni.lib>${hbdc.sysm.jni}/target/lib</hbdc.sysm.jni.lib>
+        <hbdc.sysm.jni.testlib>${hbdc.sysm.jni}/target/test-lib</hbdc.sysm.jni.testlib>
+        <hbdc.sysm.native>../hbdc-sysm-native</hbdc.sysm.native>
+        <hbdc.sysm.native.include>${hbdc.sysm.native}/include/main</hbdc.sysm.native.include>
+        <hbdc.sysm.native.testinclude>${hbdc.sysm.native}/include/test</hbdc.sysm.native.testinclude>
+        <hbdc.sysm.native.libname>libhbdcsysm-amd64-linux</hbdc.sysm.native.libname>
+    </properties>
+</project>

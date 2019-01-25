@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>hbdc-sysm</artifactId>
+        <groupId>edu.scut.cs</groupId>
+        <version>0.1.0</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>hbdc-sysm-native</artifactId>
+    <packaging>so</packaging>
+    <properties>
+        <sourceDirectory>${basedir}/src/main/</sourceDirectory>
+        <testSourceDirectory>${basedir}/src/test/</testSourceDirectory>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>jni-test</id>
+            <!-- maven 参数设置-Dtest=true 则启动该profile-->
+            <activation>
+                <property>
+                    <name>test</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <!-- 清理编译后的.so和copy出去的.so-->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-clean-plugin</artifactId>
+                        <version>2.5</version>
+                        <configuration>
+                            <filesets>
+                                <fileset>
+                                    <directory>${hbdc.sysm.jni.testlib}</directory>
+                                    <followSymlinks>false</followSymlinks>
+                                    <useDefaultExcludes>true</useDefaultExcludes>
+                                </fileset>
+                            </filesets>
+                        </configuration>
+                    </plugin>
+
+                    <!-- 编译.so-->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>native-maven-plugin</artifactId>
+                        <version>1.0-alpha-8</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <compilerProvider>generic-classic</compilerProvider>
+                            <compilerExecutable>gcc</compilerExecutable>
+                            <linkerExecutable>gcc</linkerExecutable>
+                            <sources>
+                                <source>
+                                    <directory>${testSourceDirectory}</directory>
+                                    <fileNames>
+                                        <fileName>hello.c</fileName>
+                                    </fileNames>
+                                </source>
+                                <source>
+                                    <directory>${hbdc.sysm.native.testinclude}</directory>
+                                </source>
+                            </sources>
+                            <compilerStartOptions>
+                                <compilerStartOption>-I ${env.JAVA_HOME}/include</compilerStartOption>
+                                <compilerStartOption>-I ${env.JAVA_HOME}/include/linux</compilerStartOption>
+                            </compilerStartOptions>
+                            <compilerEndOptions>
+                                <compilerEndOption>-shared</compilerEndOption>
+                                <compilerEndOption>-fPIC</compilerEndOption>
+                            </compilerEndOptions>
+                            <linkerStartOptions>
+                                <linkerStartOption>-I ${env.JAVA_HOME}/include</linkerStartOption>
+                                <linkerStartOption>-I ${env.JAVA_HOME}/include/linux</linkerStartOption>
+                            </linkerStartOptions>
+                            <linkerEndOptions>
+                                <linkerEndOption>-shared</linkerEndOption>
+                                <linkerEndOption>-fPIC</linkerEndOption>
+                            </linkerEndOptions>
+                            <linkerFinalName>libhbdcsysm-amd64-linux-test</linkerFinalName>
+                        </configuration>
+                    </plugin>
+
+                    <!-- 编译完.so后执行copy-->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>2.6</version>
+                        <executions>
+                            <execution>
+                                <id>copy-lib</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${hbdc.sysm.jni.testlib}</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.build.directory}</directory>
+                                            <includes>
+                                                <include>*.so</include>
+                                            </includes>
+                                            <filtering>false</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>jni-dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <!-- 清理编译后的.so和copy出去的.so-->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-clean-plugin</artifactId>
+                        <version>2.5</version>
+                        <configuration>
+                            <filesets>
+                                <fileset>
+                                    <directory>${hbdc.sysm.jni.lib}</directory>
+                                    <followSymlinks>false</followSymlinks>
+                                    <useDefaultExcludes>true</useDefaultExcludes>
+                                </fileset>
+                            </filesets>
+                        </configuration>
+                    </plugin>
+
+                    <!-- 编译.so-->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>native-maven-plugin</artifactId>
+                        <version>1.0-alpha-8</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <compilerProvider>generic-classic</compilerProvider>
+                            <compilerExecutable>gcc</compilerExecutable>
+                            <linkerExecutable>gcc</linkerExecutable>
+                            <sources>
+                                <source>
+                                    <directory>${sourceDirectory}</directory>
+                                    <fileNames>
+                                        <fileName>javasysm.c</fileName>
+                                        <fileName>sysm.c</fileName>
+                                        <fileName>sysm_format.c</fileName>
+                                        <fileName>sysm_util.c</fileName>
+                                        <fileName>version.c</fileName>
+                                    </fileNames>
+                                </source>
+                                <source>
+                                    <directory>${basedir}/include/main</directory>
+                                </source>
+                            </sources>
+                            <compilerStartOptions>
+                                <compilerStartOption>-I ${env.JAVA_HOME}/include</compilerStartOption>
+                                <compilerStartOption>-I ${env.JAVA_HOME}/include/linux</compilerStartOption>
+                            </compilerStartOptions>
+                            <compilerEndOptions>
+                                <compilerEndOption>-shared</compilerEndOption>
+                                <compilerEndOption>-fPIC</compilerEndOption>
+                            </compilerEndOptions>
+                            <linkerStartOptions>
+                                <linkerStartOption>-I ${env.JAVA_HOME}/include</linkerStartOption>
+                                <linkerStartOption>-I ${env.JAVA_HOME}/include/linux</linkerStartOption>
+                            </linkerStartOptions>
+                            <linkerEndOptions>
+                                <linkerEndOption>-shared</linkerEndOption>
+                                <linkerEndOption>-fPIC</linkerEndOption>
+                            </linkerEndOptions>
+                            <linkerFinalName>${hbdc.sysm.native.libname}</linkerFinalName>
+                        </configuration>
+                    </plugin>
+
+                    <!-- 编译完.so后执行copy-->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>2.6</version>
+                        <executions>
+                            <execution>
+                                <id>copy-lib</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${hbdc.sysm.jni.lib}</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.build.directory}</directory>
+                                            <includes>
+                                                <include>*.so</include>
+                                            </includes>
+                                            <filtering>false</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>
