@@ -3,14 +3,14 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>hbdc-sysm</artifactId>
+        <artifactId>sysm-parent</artifactId>
         <groupId>edu.scut.cs</groupId>
         <version>0.1.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>hbdc-sysm-native</artifactId>
+    <artifactId>sysm-native</artifactId>
     <packaging>so</packaging>
     <properties>
         <sourceDirectory>${basedir}/src/main/</sourceDirectory>
@@ -37,7 +37,7 @@
                         <configuration>
                             <filesets>
                                 <fileset>
-                                    <directory>${hbdc.sysm.jni.testlib}</directory>
+                                    <directory>${sysm.jni.testlib}</directory>
                                     <followSymlinks>false</followSymlinks>
                                     <useDefaultExcludes>true</useDefaultExcludes>
                                 </fileset>
@@ -63,7 +63,7 @@
                                     </fileNames>
                                 </source>
                                 <source>
-                                    <directory>${hbdc.sysm.native.testinclude}</directory>
+                                    <directory>${sysm.native.testinclude}</directory>
                                 </source>
                             </sources>
                             <compilerStartOptions>
@@ -99,7 +99,7 @@
                                     <goal>copy-resources</goal>
                                 </goals>
                                 <configuration>
-                                    <outputDirectory>${hbdc.sysm.jni.testlib}</outputDirectory>
+                                    <outputDirectory>${sysm.jni.testlib}</outputDirectory>
                                     <resources>
                                         <resource>
                                             <directory>${project.build.directory}</directory>
@@ -131,7 +131,7 @@
                         <configuration>
                             <filesets>
                                 <fileset>
-                                    <directory>${hbdc.sysm.jni.lib}</directory>
+                                    <directory>${sysm.jni.lib}</directory>
                                     <followSymlinks>false</followSymlinks>
                                     <useDefaultExcludes>true</useDefaultExcludes>
                                 </fileset>
@@ -180,7 +180,7 @@
                                 <linkerEndOption>-shared</linkerEndOption>
                                 <linkerEndOption>-fPIC</linkerEndOption>
                             </linkerEndOptions>
-                            <linkerFinalName>${hbdc.sysm.native.libname}</linkerFinalName>
+                            <linkerFinalName>${sysm.native.libname}</linkerFinalName>
                         </configuration>
                     </plugin>
 
@@ -197,7 +197,7 @@
                                     <goal>copy-resources</goal>
                                 </goals>
                                 <configuration>
-                                    <outputDirectory>${hbdc.sysm.jni.lib}</outputDirectory>
+                                    <outputDirectory>${sysm.jni.lib}</outputDirectory>
                                     <resources>
                                         <resource>
                                             <directory>${project.build.directory}</directory>

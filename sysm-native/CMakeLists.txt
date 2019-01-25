@@ -4,7 +4,7 @@
 #
 
 cmake_minimum_required(VERSION 3.8)
-project(hbdc_sysm_native)
+project(sysm_native)
 
 set(CMAKE_C_STANDARD 99)
 set(SOURCE_FILES src/main/javasysm.c
@@ -21,4 +21,4 @@ include_directories(include/main
 
 add_subdirectory(src/test)
 
-add_library(hbdcsysm-amd64-linux SHARED ${SOURCE_FILES})
+add_library(sysm-amd64-linux SHARED ${SOURCE_FILES})

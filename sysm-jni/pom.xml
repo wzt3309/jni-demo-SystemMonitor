@@ -3,14 +3,14 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>hbdc-sysm</artifactId>
+        <artifactId>sysm-parent</artifactId>
         <groupId>edu.scut.cs</groupId>
         <version>0.1.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>hbdc-sysm-jni</artifactId>
+    <artifactId>sysm-jni</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -64,7 +64,7 @@
                         </goals>
                         <configuration>
                             <!-- 头文件输出路径 -->
-                            <javahOutputDirectory>${hbdc.sysm.native.include}</javahOutputDirectory>
+                            <javahOutputDirectory>${sysm.native.include}</javahOutputDirectory>
                             <!-- 包含native方法的类 -->
                             <javahClassNames>
                                 <javahClassName>edu.scut.cs.hbdc.sysm.Sysm</javahClassName>
